@@ -23,12 +23,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.mvpforsevenwindsstudio.core.navigation.NavRoute
+import com.example.mvpforsevenwindsstudio.feature_registration.presentation.viewmodel.RegisterViewModel
 
 @Composable
-fun InputsForLoginOrRegistration(modifier: Modifier, navController: NavController) {
-    var textEmail by remember { mutableStateOf("") }
-    var textPassword by remember { mutableStateOf("") }
-    var textPasswordAgain by remember { mutableStateOf("") }
+fun InputsForLoginOrRegistration(
+    modifier: Modifier,
+    navController: NavController,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onPasswordAgainChanged: (String) -> Unit,
+    viewModelState: RegisterViewModel.RegisterState,
+) {
+
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStack?.destination?.route
 
@@ -40,10 +46,8 @@ fun InputsForLoginOrRegistration(modifier: Modifier, navController: NavControlle
 
         TextField(
 
-            value = textEmail,
-            onValueChange = { newText ->
-                textEmail = newText
-            },
+            value = viewModelState.email,
+            onValueChange = { onEmailChanged(it) },
             placeholder = {
                 Text(
                     "example@example.ru",
@@ -82,8 +86,8 @@ fun InputsForLoginOrRegistration(modifier: Modifier, navController: NavControlle
         Text(text = "Пароль", fontSize = 16.sp, color = MaterialTheme.colorScheme.secondary)
 
         TextField(
-            value = textPassword,
-            onValueChange = { textPassword = it },
+            value = viewModelState.password,
+            onValueChange = { onPasswordChanged(it) },
             placeholder = {
                 Text(
                     "******",
@@ -118,11 +122,15 @@ fun InputsForLoginOrRegistration(modifier: Modifier, navController: NavControlle
         )
 
         if (currentRoute == NavRoute.Registration.route) {
-            Text(text = "Повторите пароль", fontSize = 16.sp, color = MaterialTheme.colorScheme.secondary)
+            Text(
+                text = "Повторите пароль",
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.secondary
+            )
 
             TextField(
-                value = textPasswordAgain,
-                onValueChange = { textPasswordAgain = it },
+                value = viewModelState.passwordAgain,
+                onValueChange = { onPasswordAgainChanged(it) },
                 placeholder = {
                     Text(
                         "******",

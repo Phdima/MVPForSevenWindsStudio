@@ -14,14 +14,16 @@ private val DarkColorScheme = darkColorScheme(
     primary = colorForBackground,
     secondary = colorForInputField,
     tertiary = colorForNavButton,
-    onBackground = colorForAppBar
+    onBackground = colorForAppBar,
+    onPrimary = colorForCoffeeOrderOrShop
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = colorForBackground,
     secondary = colorForInputField,
     tertiary = colorForNavButton,
-    onBackground = colorForAppBar
+    onBackground = colorForAppBar,
+    onPrimary = colorForCoffeeOrderOrShop
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
