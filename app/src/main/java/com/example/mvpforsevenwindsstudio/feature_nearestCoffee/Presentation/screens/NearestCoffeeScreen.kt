@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.mvpforsevenwindsstudio.core.navigation.NavRoute
 import com.example.mvpforsevenwindsstudio.core.ui.components.NavButton
 import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.Presentation.components.LocationsList
 import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.Presentation.viewModel.LocationsViewModel
@@ -28,7 +29,9 @@ fun NearestCoffeeScreen(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        LocationsList(locations = locations)
+        LocationsList(locations = locations, onItemClick = { locationId ->
+            navController.navigate(NavRoute.Menu.withLocation(locationId))
+        })
 
         NavButton(
             modifier = Modifier

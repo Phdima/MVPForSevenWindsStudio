@@ -3,7 +3,7 @@ package com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.model
 import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.data.remote.dto.GeoPointDto
 import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.data.remote.dto.LocationDto
 
-data class Location(
+data class LocationDomain(
     val id: Int,
     val name: String,
     val latitude: Double,
@@ -12,8 +12,8 @@ data class Location(
 
 object LocationMapper {
 
-    fun toDomain(dto: LocationDto): Location {
-        return Location(
+    fun toDomain(dto: LocationDto): LocationDomain {
+        return LocationDomain(
             id = dto.id,
             name = dto.name,
             latitude = dto.point.latitude,
@@ -21,11 +21,11 @@ object LocationMapper {
         )
     }
 
-    fun toDomainList(dtoList: List<LocationDto>): List<Location> {
+    fun toDomainList(dtoList: List<LocationDto>): List<LocationDomain> {
         return dtoList.map { toDomain(it) }
     }
 
-    fun toDto(domain: Location): LocationDto {
+    fun toDto(domain: LocationDomain): LocationDto {
         return LocationDto(
             id = domain.id,
             name = domain.name,

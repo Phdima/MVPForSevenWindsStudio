@@ -4,7 +4,7 @@ import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.AuthA
 import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.dto.AuthRequest
 import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.dto.AuthResponse
 import com.example.mvpforsevenwindsstudio.feature_registration.domain.AuthRepository
-import com.example.mvpforsevenwindsstudio.core.SessionAccess.SessionManager
+import com.example.mvpforsevenwindsstudio.core.shared.SessionManager
 import retrofit2.Response
 import javax.inject.Inject
 

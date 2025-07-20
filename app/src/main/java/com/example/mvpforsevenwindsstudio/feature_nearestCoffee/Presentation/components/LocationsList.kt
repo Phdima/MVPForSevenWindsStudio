@@ -8,17 +8,23 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.model.Location
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.Presentation.viewModel.LocationWithDistance
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.model.LocationDomain
 
 @Composable
-fun LocationsList(locations: List<Location>) {
+fun LocationsList(
+    locations: List<LocationWithDistance>,
+    onItemClick: (Int) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        itemsIndexed(locations) { _, location ->
-            CoffeeShopItem(location = location)
+        itemsIndexed(locations) { _, locationWithDistance ->
+            CoffeeShopItem(
+                locationWithDistance = locationWithDistance,
+                onClick = { onItemClick(locationWithDistance.location.id) })
         }
     }
 }

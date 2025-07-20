@@ -43,6 +43,13 @@ android {
 
 dependencies {
 
+    //Coil
+    implementation(libs.coil.compose)
+
+    //GeoLocation
+    implementation (libs.play.services.location)
+    implementation (libs.kotlinx.coroutines.play.services)
+
     //Retrofit
     implementation (libs.retrofit)
 

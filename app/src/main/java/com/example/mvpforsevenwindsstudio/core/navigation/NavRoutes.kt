@@ -5,6 +5,10 @@ sealed class NavRoute(val route: String) {
     object Login : NavRoute("login")
     object NearestCoffee : NavRoute("nearestCoffee")
     object Map : NavRoute("map")
-    object Menu : NavRoute("menu")
+    object Menu : NavRoute("menu") {
+        fun withLocation(locationId: Int): String = "$route/$locationId"
+        const val PATTERN = "menu/{locationId}"
+        val baseRoute = route
+    }
     object Order : NavRoute("order")
 }

@@ -1,11 +1,10 @@
 package com.example.mvpforsevenwindsstudio.feature_nearestCoffee.Presentation.viewModel
 
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.model.Location
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.model.LocationDomain
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.service.LocationService
 import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.useCase.LocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,40 +15,59 @@ import javax.inject.Inject
 @HiltViewModel
 class LocationsViewModel @Inject constructor(
     private val locationUseCase: LocationUseCase,
+    private val locationService: LocationService,
 ) : ViewModel() {
+
+
+    private val _userLocation = MutableStateFlow<Location?>(null)
+
+
+    private val _locations = MutableStateFlow<List<LocationWithDistance>>(emptyList())
+    val locations: StateFlow<List<LocationWithDistance>> = _locations
 
     init {
         loadLocations()
+        getUserLocation()
     }
 
-    private val _locations = MutableStateFlow<List<Location>>(emptyList())
-    val locations: StateFlow<List<Location>> = _locations
+    private fun getUserLocation() {
+        viewModelScope.launch {
+            _userLocation.value = locationService.getCurrentLocation()
+        }
+    }
 
     private fun loadLocations() {
         viewModelScope.launch {
-            try {
-                Log.d("LocationsViewModel", "Loading locations started")
-
-                val result = locationUseCase()
-
-                if (result.isSuccess) {
-                    val data = result.getOrNull() ?: emptyList()
-                    Log.d("LocationsViewModel", "Received ${data.size} locations")
-
-                    data.take(3).forEachIndexed { index, location ->
-                        Log.d("LocationsViewModel", "Location $index: ${location.name}")
-                    }
-
-                    _locations.value = data
-                } else {
-                    val exception = result.exceptionOrNull()
-                    Log.e("LocationsViewModel", "Error loading locations", exception)
-                }
-            } catch (e: Exception) {
-                Log.e("LocationsViewModel", "Exception in loadLocations", e)
-            } finally {
-                Log.d("LocationsViewModel", "Loading locations completed")
+            val result = locationUseCase()
+            if (result.isSuccess) {
+                val locations = result.getOrNull() ?: emptyList()
+                _locations.value = locations.map { location ->
+                    LocationWithDistance(
+                        location = location,
+                        distance = calculateDistanceToLocation(location)
+                    )
+                }.sortedBy { it.distance }
             }
         }
     }
+
+    private fun calculateDistanceToLocation(location: LocationDomain): Float {
+        val userLocation = _userLocation.value
+        return if (userLocation != null) {
+            locationService.calculateDistance(
+                userLocation.latitude,
+                userLocation.longitude,
+                location.latitude,
+                location.longitude
+            )
+        } else {
+            -1f
+        }
+    }
 }
+
+
+data class LocationWithDistance(
+    val location: LocationDomain,
+    val distance: Float,
+)

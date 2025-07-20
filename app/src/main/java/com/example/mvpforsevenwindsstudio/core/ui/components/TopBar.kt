@@ -22,13 +22,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 import com.example.mvpforsevenwindsstudio.core.navigation.NavRoute
 import com.example.mvpforsevenwindsstudio.feature_login.LoginScreen
+import com.example.mvpforsevenwindsstudio.feature_menu.presentation.screens.MenuScreen
 import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.Presentation.screens.NearestCoffeeScreen
+import com.example.mvpforsevenwindsstudio.feature_order.screens.OrderScreen
 import com.example.mvpforsevenwindsstudio.feature_registration.presentation.screen.RegistrationScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +42,7 @@ fun TopBar() {
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStack?.destination?.route
 
-    val title = when (currentRoute) {
+    val title = when (currentBackStack?.destination?.route?.substringBefore('/')){
         NavRoute.Login.route -> "Вход"
         NavRoute.Registration.route -> "Регистрация"
         NavRoute.NearestCoffee.route -> "Ближайшие кофейни"
@@ -56,7 +60,9 @@ fun TopBar() {
                 title = {
                     Text(
                         title,
-                        modifier = Modifier.fillMaxWidth().offset(x = -10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(x = -10.dp),
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.secondary
                     )
@@ -75,7 +81,11 @@ fun TopBar() {
                         )
                     ) {
                         IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(Icons.Outlined.KeyboardArrowLeft, "Назад", tint = MaterialTheme.colorScheme.secondary )
+                            Icon(
+                                Icons.Outlined.KeyboardArrowLeft,
+                                "Назад",
+                                tint = MaterialTheme.colorScheme.secondary
+                            )
 
                         }
                     }
@@ -91,6 +101,16 @@ fun TopBar() {
             composable(NavRoute.Login.route) { LoginScreen(navController) }
             composable(NavRoute.Registration.route) { RegistrationScreen(navController) }
             composable(NavRoute.NearestCoffee.route) { NearestCoffeeScreen(navController) }
+            composable(
+                NavRoute.Menu.PATTERN,
+                arguments = listOf(navArgument("locationId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val locationId = backStackEntry.arguments?.getInt("locationId") ?: 0
+                MenuScreen(navController = navController, locationId = locationId)
+            }
+            composable("order") {
+                OrderScreen(navController)
+            }
         }
     }
 }

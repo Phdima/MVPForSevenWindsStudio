@@ -74,9 +74,9 @@ fun RegistrationScreen(
                     .height(48.dp),
                 enabled = !state.isLoading && state.isFormValid,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
+                    containerColor = MaterialTheme.colorScheme.tertiary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
-                    disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                    disabledContainerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
                     disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
                 )
             ) {
