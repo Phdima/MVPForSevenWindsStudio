@@ -1,9 +1,13 @@
 package com.example.mvpforsevenwindsstudio.core.di
 
+import android.content.Context
 import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.AuthApi
+import com.example.mvpforsevenwindsstudio.core.SessionAccess.SessionManager
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.data.remote.LocationsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -41,4 +45,20 @@ object NetworkModule {
     fun provideAuthApi(retrofit: Retrofit): AuthApi {
         return retrofit.create(AuthApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideLocationsApi(retrofit: Retrofit): LocationsApi {
+        return retrofit.create(LocationsApi::class.java)
+    }
+
+    @Provides
+    fun provideContext(@ApplicationContext context: Context): Context {
+        return context
+    }
+
+    @Provides
+    @Singleton
+    fun provideSessionManager(context: Context) : SessionManager = SessionManager(context)
+
 }

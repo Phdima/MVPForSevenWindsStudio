@@ -4,13 +4,14 @@ import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.AuthA
 import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.dto.AuthRequest
 import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.dto.AuthResponse
 import com.example.mvpforsevenwindsstudio.feature_registration.domain.AuthRepository
-import com.google.gson.Gson
+import com.example.mvpforsevenwindsstudio.core.SessionAccess.SessionManager
 import retrofit2.Response
 import javax.inject.Inject
 
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authApi: AuthApi
+    private val authApi: AuthApi,
+    private val sessionManager: SessionManager
 ) : AuthRepository {
 
     override suspend fun register(
@@ -18,12 +19,19 @@ class AuthRepositoryImpl @Inject constructor(
         password: String,
     ): Result<AuthResponse> {
         return safeApiCall {
-            authApi.register(
+            val response = authApi.register(
                 AuthRequest(
                     login = login,
                     password = password
                 )
             )
+
+            if (response.isSuccessful) {
+                response.body()?.token?.let { token ->
+                    sessionManager.saveToken(token)
+                }
+            }
+            response
         }
     }
 

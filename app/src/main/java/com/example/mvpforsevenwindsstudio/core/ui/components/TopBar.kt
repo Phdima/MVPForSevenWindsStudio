@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.mvpforsevenwindsstudio.core.navigation.NavRoute
 import com.example.mvpforsevenwindsstudio.feature_login.LoginScreen
-import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.NearestCoffeeScreen
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.Presentation.screens.NearestCoffeeScreen
 import com.example.mvpforsevenwindsstudio.feature_registration.presentation.screen.RegistrationScreen
 
 @OptIn(ExperimentalMaterial3Api::class)

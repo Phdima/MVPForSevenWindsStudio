@@ -4,6 +4,11 @@ import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.AuthA
 import com.example.mvpforsevenwindsstudio.feature_registration.data.repository.AuthRepositoryImpl
 import com.example.mvpforsevenwindsstudio.feature_registration.domain.AuthRepository
 import com.example.mvpforsevenwindsstudio.feature_registration.domain.RegisterUseCase
+import com.example.mvpforsevenwindsstudio.core.SessionAccess.SessionManager
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.data.remote.LocationsApi
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.data.repository.LocationsRepositoryImpl
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.repository.LocationRepository
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.useCase.LocationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,10 +21,24 @@ object AuthModule {
 
     @Provides
     @ViewModelScoped
-    fun provideAuthRepository(api: AuthApi): AuthRepository = AuthRepositoryImpl(api)
+    fun provideAuthRepository(api: AuthApi, sessionManager: SessionManager): AuthRepository =
+        AuthRepositoryImpl(api, sessionManager)
 
 
     @Provides
     @ViewModelScoped
-    fun provideRegisterUseCase(repository: AuthRepository): RegisterUseCase = RegisterUseCase(repository)
+    fun provideRegisterUseCase(repository: AuthRepository): RegisterUseCase =
+        RegisterUseCase(repository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideLocationRepository(api:LocationsApi, sessionManager: SessionManager ): LocationRepository =
+        LocationsRepositoryImpl(api,sessionManager)
+
+
+    @Provides
+    @ViewModelScoped
+    fun provideLocationUseCase(repository: LocationRepository): LocationUseCase =
+        LocationUseCase(repository)
+
 }
