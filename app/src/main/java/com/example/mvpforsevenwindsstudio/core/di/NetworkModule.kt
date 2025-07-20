@@ -2,8 +2,10 @@ package com.example.mvpforsevenwindsstudio.core.di
 
 import android.content.Context
 import com.example.mvpforsevenwindsstudio.feature_registration.data.remote.AuthApi
-import com.example.mvpforsevenwindsstudio.core.SessionAccess.SessionManager
+import com.example.mvpforsevenwindsstudio.core.shared.SessionManager
+import com.example.mvpforsevenwindsstudio.feature_menu.data.remote.MenuApi
 import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.data.remote.LocationsApi
+import com.example.mvpforsevenwindsstudio.feature_nearestCoffee.domain.service.LocationService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,6 +55,12 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
+    fun provideMenuApi(retrofit: Retrofit): MenuApi {
+        return retrofit.create(MenuApi::class.java)
+    }
+
+    @Provides
     fun provideContext(@ApplicationContext context: Context): Context {
         return context
     }
@@ -61,4 +69,10 @@ object NetworkModule {
     @Singleton
     fun provideSessionManager(context: Context) : SessionManager = SessionManager(context)
 
+
+    @Provides
+    @Singleton
+    fun provideLocationService(@ApplicationContext context: Context): LocationService {
+        return LocationService(context)
+    }
 }

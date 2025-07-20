@@ -3,7 +3,7 @@ package com.example.mvpforsevenwindsstudio.feature_registration.presentation.vie
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mvpforsevenwindsstudio.feature_registration.domain.RegisterUseCase
-import com.example.mvpforsevenwindsstudio.core.SessionAccess.SessionManager
+import com.example.mvpforsevenwindsstudio.core.shared.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

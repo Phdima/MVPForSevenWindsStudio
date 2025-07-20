@@ -1,4 +1,4 @@
-package com.example.mvpforsevenwindsstudio.core.SessionAccess
+package com.example.mvpforsevenwindsstudio.core.shared
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
